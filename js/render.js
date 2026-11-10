@@ -15,10 +15,10 @@ export function renderStats(state) {
   const total = stats.total;
   const improvedPct = total ? Math.round((stats.improved / total) * 100) : 0;
   const cards = [
-    { label: 'Total Catatan', value: total, delta: `+${stats.diffThisWeek} minggu ini` },
-    { label: 'Mata Kuliah Aktif', value: stats.activeCourses, delta: `${state.user.totalSks || 0} SKS total` },
-    { label: 'AI Disempurnakan', value: `${stats.improved} / ${total}`, delta: `${improvedPct}%` },
-    { label: 'Streak', value: `${state.user.streakTarget || 0} hari`, delta: 'target' }
+    { label: 'Total Catatan', value: total, delta: total ? `+${stats.diffThisWeek} minggu ini` : 'Belum ada catatan' },
+    { label: 'Mata Kuliah Aktif', value: stats.activeCourses, delta: total ? `${state.user.totalSks || 0} SKS total` : '0 SKS total' },
+    { label: 'AI Disempurnakan', value: `${stats.improved} / ${total}`, delta: total ? `${improvedPct}%` : '0%' },
+    { label: 'Streak', value: `${state.user.streakTarget || 0} hari`, delta: total ? 'target' : 'target' }
   ];
 
   shell.innerHTML = cards.map((card) => `
@@ -63,6 +63,16 @@ export function renderFileUploads(state) {
 export function renderTodayNotes(state) {
   const container = document.getElementById('todaysNotesList');
   if (!container) return;
+  if (!state.notes.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>Belum ada catatan</h3>
+        <p class="muted">Tulis catatan pertamamu di panel Hari Ini untuk mulai melacak progres belajar.</p>
+      </div>
+    `;
+    return;
+  }
+
   container.innerHTML = state.notes.map((note) => `
     <div class="note-row" data-note-id="${escapeHtml(note.id || '')}">
       <div class="row-head">
@@ -85,6 +95,11 @@ export function renderTodayNotes(state) {
 export function renderTips(state) {
   const container = document.getElementById('tipsList');
   if (!container) return;
+  if (!state.tips.length) {
+    container.innerHTML = '<div class="tip-item"><span>Belum ada tips AI. Tulis catatan pertama untuk menghasilkan saran personal.</span><span class="muted">AI</span></div>';
+    return;
+  }
+
   container.innerHTML = state.tips.map((tip) => `
     <div class="tip-item"><span>${escapeHtml(tip)}</span><span class="muted">AI</span></div>
   `).join('');
@@ -93,6 +108,11 @@ export function renderTips(state) {
 export function renderDistribution(state) {
   const container = document.getElementById('distributionList');
   if (!container) return;
+  if (!state.distribution.length) {
+    container.innerHTML = '<div class="distribution-item"><span>Belum ada data belajar</span><span class="muted">0%</span></div>';
+    return;
+  }
+
   container.innerHTML = state.distribution.map((item) => `
     <div class="distribution-item">
       <span>${escapeHtml(item.name)}</span>
@@ -106,6 +126,16 @@ export function renderDistribution(state) {
 export function renderLibraryCards(state) {
   const container = document.getElementById('libraryCards');
   if (!container) return;
+  if (!state.notes.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <h3>Perpustakaan masih kosong</h3>
+        <p class="muted">Belum ada catatan tersimpan. Tulis satu catatan pertama untuk memulai progres belajar.</p>
+      </div>
+    `;
+    return;
+  }
+
   container.innerHTML = state.notes.map((note) => `
     <article class="library-card" data-note-id="${escapeHtml(note.id || '')}" style="cursor:pointer; ${state.selectedNoteId === note.id ? 'outline:2px solid var(--accent);' : ''}">
       <div class="thumb">${escapeHtml(note.language || 'Catatan')}</div>
@@ -127,7 +157,7 @@ export function renderLibraryCards(state) {
           <span>⏱ ${escapeHtml(note.time)}</span>
         </div>
       </div>
-      <button class="bookmark" data-bookmark-note-id="${escapeHtml(note.id || '')}" aria-label="Bookmark" style="${note.bookmark ? 'color: var(--warning); background: rgba(215,125,47,0.14);' : ''}">★</button>
+      <button class="bookmark" data-bookmark-note-id="${escapeHtml(note.id || '')}" aria-label="Bookmark catatan" style="${note.bookmark ? 'color: var(--warning); background: rgba(215,125,47,0.14);' : ''}">★</button>
     </article>
   `).join('');
 }
@@ -177,6 +207,11 @@ export function renderSearchResults(state, query) {
   const normalized = query.trim().toLowerCase();
   if (!normalized) {
     container.innerHTML = '<div class="search-result">Ketik kata kunci untuk mencari catatan, topik, atau materi.</div>';
+    return;
+  }
+
+  if (!state.notes.length) {
+    container.innerHTML = '<div class="search-result">Belum ada catatan untuk dicari. Tulis catatan pertama untuk mulai.</div>';
     return;
   }
 

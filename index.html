@@ -1468,7 +1468,7 @@
 
                   <div class="draft-meta">
                     <span id="wordCount">0 kata</span>
-                    <span id="draftSaved">disimpan 2 menit lalu</span>
+                    <span id="draftSaved">Belum disimpan</span>
                   </div>
 
                   <div class="draft-actions">
@@ -1540,7 +1540,7 @@
                     <button id="timerResetBtn" class="btn ghost" type="button">Sesi baru</button>
                   </div>
                   <div class="timer-row">
-                    <span id="timerValue" class="timer-pill">01:24:12</span>
+                    <span id="timerValue" class="timer-pill">00:00:00</span>
                     <button id="timerStartBtn" class="btn primary" type="button">Mulai</button>
                   </div>
                   <div class="draft-actions">
@@ -1586,31 +1586,31 @@
               <aside class="sidebar-stack" style="display:grid; gap:18px;">
                 <div class="panel">
                   <div class="section-head">
-                    <h3>Fokus Minggu Ini</h3>
-                    <span class="muted">7/10</span>
+                    <h3>Target Belajar</h3>
+                    <span class="muted">0/1</span>
                   </div>
                   <div class="note-row">
-                    <div class="note-title">Mata Kuliah: Algoritma</div>
-                    <div class="snippet">3 modul selanjutnya • 4 catatan butuh review</div>
-                    <div class="bar"><span style="width:72%"></span></div>
+                    <div class="note-title">Belum ada target aktif</div>
+                    <div class="snippet">Tulis catatan pertamamu untuk membuat target belajar otomatis.</div>
+                    <div class="bar"><span style="width:0%"></span></div>
                   </div>
                 </div>
 
                 <div class="panel">
                   <div class="section-head">
                     <h3>Rekap AI</h3>
-                    <span class="muted">74%</span>
+                    <span class="muted">0%</span>
                   </div>
-                  <div class="bar"><span style="width:74%"></span></div>
-                  <p class="muted" style="margin-top:12px;">Progres penyempurnaan meningkat 12% dibanding minggu lalu.</p>
+                  <div class="bar"><span style="width:0%"></span></div>
+                  <p class="muted" style="margin-top:12px;">AI akan menampilkan ringkasan saat catatan sudah mulai dibuat.</p>
                 </div>
 
                 <div class="panel">
                   <div class="section-head">
                     <h3>Penyimpanan</h3>
-                    <span class="status-badge ready">Tersimpan online</span>
+                    <span class="status-badge ready">Tersimpan di browser ini</span>
                   </div>
-                  <div class="muted">1.8 GB dari 4.0 GB · terakhir sinkron 08:41</div>
+                  <div class="muted">Belum ada file yang diunggah atau disinkronkan.</div>
                 </div>
               </aside>
             </div>
@@ -1620,21 +1620,19 @@
             <div class="breadcrumbs">
               <span>Perpustakaan</span>
               <span>›</span>
-              <span>Algoritma</span>
+              <span>Catatan</span>
               <span>›</span>
-              <span>Optimasi Tabel Hash</span>
+              <span>Belum ada catatan dipilih</span>
             </div>
 
             <div class="detail-layout">
               <div>
                 <div class="detail-title-row">
                   <div class="title-block">
-                    <h2 id="detailTitle">Optimasi Tabel Hash</h2>
+                    <h2 id="detailTitle">Belum ada catatan</h2>
                     <div class="meta-row" id="detailMeta">
-                      <span class="tag">Algoritma</span>
-                      <span>Dipelajari 23 Sep 2026</span>
-                      <span>3 menit dibaca</span>
-                      <span>6 lampiran</span>
+                      <span class="tag">Kosong</span>
+                      <span>Pilih catatan yang sudah dibuat</span>
                     </div>
                   </div>
                   <div class="inline-actions">
@@ -1750,15 +1748,15 @@ class TabelHash:
             </div>
 
             <div class="content-block" style="margin-top:18px;">
-              <h3>Arah Tambahan untuk AI</h3>
-              <textarea rows="3" placeholder="Berikan arahan tambahan agar AI memperdalam versi catatan..."></textarea>
+              <h3>Instruksi AI</h3>
+              <textarea rows="3" placeholder="Tambahkan instruksi untuk membantu AI membuat ringkasan atau penjelasan dari catatanmu..."></textarea>
               <div class="tag-row" style="margin-top:12px;">
-                <button class="mini-chip active">Analogi Kasir</button>
-                <button class="mini-chip">Contoh Coding</button>
-                <button class="mini-chip">Buat diagram</button>
+                <button class="mini-chip active">Ringkas</button>
+                <button class="mini-chip">Jelaskan</button>
+                <button class="mini-chip">Buat kuis</button>
               </div>
               <div class="draft-actions">
-                <button class="btn primary">Tambah Detail Lagi</button>
+                <button class="btn primary">Simpan instruksi</button>
               </div>
             </div>
           </section>
@@ -1790,17 +1788,16 @@ class TabelHash:
 
                   <div class="empty-state">
                     <h3>Belum ada pertanyaan</h3>
-                    <p class="muted">Contoh pertanyaan dibuat dari catatan yang kamu simpan:</p>
+                    <p class="muted">Tanya tentang ringkasan, kesulitan, atau kuis dari catatan yang kamu buat.</p>
                     <div class="question-pills">
-                      <button>Buatkan kuis latihan</button>
-                      <button>Jelaskan lebih sederhana</button>
                       <button>Ringkas 5 poin</button>
+                      <button>Jelaskan lebih sederhana</button>
+                      <button>Buatkan kuis</button>
                     </div>
                   </div>
 
                   <div class="chat-box" id="chatBox">
-                    <div class="chat-bubble">Saya ingin melihat pola collision yang paling sering muncul pada tabel hash dengan load factor > 0.75.</div>
-                    <div class="chat-bubble ai">Berdasarkan catatan “Optimasi Tabel Hash”, collision biasanya meningkat ketika load factor melewati 0.75. Dalam praktikum, pendekatan chaining tetap lebih stabil untuk data acak; open addressing lebih efisien bila ukuran array dapat di-resize.</div>
+                    <div class="chat-bubble">Belum ada percakapan. Mulai dengan pertanyaan tentang catatanmu.</div>
                   </div>
 
                   <div class="composer">
@@ -1821,7 +1818,7 @@ class TabelHash:
                     </div>
                   </div>
 
-                  <p class="muted" style="margin-top:12px;">AI menjawab berdasarkan catatan yang kamu simpan; periksa kembali hal penting.</p>
+                  <p class="muted" style="margin-top:12px;">AI akan menjawab berdasarkan catatan yang tersimpan di browser ini; cek kembali poin penting sebelum dipakai.</p>
                 </div>
               </div>
 

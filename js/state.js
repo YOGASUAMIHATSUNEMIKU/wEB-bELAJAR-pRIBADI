@@ -20,7 +20,7 @@ export function createEmptyState() {
       notifications: true
     },
     settings: {
-      themeMode: 'system',
+      themeMode: 'light',
       accent: 'emerald',
       fontSize: 'standard'
     },
