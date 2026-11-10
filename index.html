@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catatan Belajar Progresif</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      :root {
+        --bg: #f4f1ea;
+        --bg-soft: #f8f5f1;
+        --panel: rgba(255, 255, 255, 0.76);
+        --panel-strong: #ffffff;
+        --panel-elevated: #f7f2ec;
+        --sidebar: rgba(255, 255, 255, 0.86);
+        --text: #1d2a2a;
+        --text-soft: #5f6d6d;
+        --border: rgba(28, 38, 36, 0.09);
+        --shadow: 0 16px 45px rgba(42, 52, 49, 0.1);
+        --accent-h: 155;
+        --accent: hsl(var(--accent-h) 55% 42%);
+        --accent-strong: hsl(var(--accent-h) 60% 36%);
+        --accent-soft: hsl(var(--accent-h) 48% 90%);
+        --accent-faint: hsl(var(--accent-h) 45% 96%);
+        --success: #1ca76d;
+        --warning: #d77d2f;
+        --danger: #c65d50;
+        --info: #3273d9;
+        --danger-soft: rgba(198, 93, 80, 0.12);
+        --chip: rgba(25, 46, 40, 0.06);
+        --overlay: rgba(19, 25, 28, 0.36);
+        --radius: 22px;
+        --radius-lg: 28px;
+        --radius-sm: 12px;
+        --font-size: 15px;
+        --font-size-small: 13.5px;
+        --font-size-large: 17px;
+      }
+
+      body[data-theme='dark'] {
+        --bg: #11171b;
+        --bg-soft: #181f25;
+        --panel: rgba(30, 38, 44, 0.8);
+        --panel-strong: #1a2329;
+        --panel-elevated: #202a30;
+        --sidebar: rgba(24, 30, 35, 0.9);
+        --text: #edf4f2;
+        --text-soft: #a6b5b8;
+        --border: rgba(255, 255, 255, 0.06);
+        --shadow: 0 14px 38px rgba(0, 0, 0, 0.28);
+        --accent-soft: hsl(var(--accent-h) 35% 18%);
+        --accent-faint: hsl(var(--accent-h) 25% 14%);
+        --chip: rgba(255, 255, 255, 0.04);
+        --overlay: rgba(3, 5, 5, 0.56);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      body[data-theme='dark'] .nav-btn.active,
+      body[data-theme='dark'] .search-box,
+      body[data-theme='dark'] .file-dropzone,
+      body[data-theme='dark'] .upload-item,
+      body[data-theme='dark'] .tip-item,
+      body[data-theme='dark'] .topic-item,
+      body[data-theme='dark'] .distribution-item,
+      body[data-theme='dark'] .card,
+      body[data-theme='dark'] .panel,
+      body[data-theme='dark'] .stat-card,
+      body[data-theme='dark'] .note-row,
+      body[data-theme='dark'] .setting-card,
+      body[data-theme='dark'] .content-block,
+      body[data-theme='dark'] .search-dialog,
+      body[data-theme='dark'] .input,
+      body[data-theme='dark'] textarea,
+      body[data-theme='dark'] select {
+        background: var(--panel-strong);
+        border-color: var(--border);
+      }
+
+      body[data-theme='dark'] .mini-chip,
+      body[data-theme='dark'] .toolbar button,
+      body[data-theme='dark'] .icon-btn,
+      body[data-theme='dark'] .btn,
+      body[data-theme='dark'] .bookmark,
+      body[data-theme='dark'] .mini-btn,
+      body[data-theme='dark'] .tab-btn,
+      body[data-theme='dark'] .question-pills button,
+      body[data-theme='dark'] .quick-toggle {
+        background: var(--panel);
+        color: var(--text);
+        border-color: var(--border);
+      }
+
+      body[data-theme='dark'] .status-badge.ready { background: rgba(28, 167, 109, 0.18); }
+      body[data-theme='dark'] .status-badge.extracting { background: rgba(50, 115, 217, 0.18); }
+      body[data-theme='dark'] .status-badge.ocr { background: rgba(215, 125, 47, 0.18); }
+      body[data-theme='dark'] .status-badge.failed { background: rgba(198, 93, 80, 0.18); }
+
+      body[data-font-size='small'] {
+        font-size: var(--font-size-small);
+      }
+
+      body[data-font-size='standard'] {
+        font-size: var(--font-size);
+      }
+
+      body[data-font-size='large'] {
+        font-size: var(--font-size-large);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, "Segoe UI", sans-serif;
+        font-size: var(--font-size);
+      }
+
+      body {
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      button, input, textarea, select {
+        font: inherit;
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 38%),
+          var(--bg);
+      }
+
+      .sidebar {
+        width: 280px;
+        background: var(--sidebar);
+        border-right: 1px solid var(--border);
+        backdrop-filter: blur(18px);
+        padding: 26px 18px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        font-size: 1.12rem;
+        padding: 8px 10px;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.16));
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
+        box-shadow: 0 10px 26px hsla(var(--accent-h), 55%, 42%, 0.28);
+      }
+
+      .student-card {
+        background: var(--panel-strong);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px 14px 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.18));
+        color: white;
+      }
+
+      .student-card strong {
+        display: block;
+        font-size: 0.96rem;
+      }
+
+      .muted {
+        color: var(--text-soft);
+        font-size: 0.78rem;
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .nav-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid transparent;
+        border-radius: 14px;
+        background: transparent;
+        color: var(--text);
+        padding: 11px 12px;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .nav-btn:hover,
+      .nav-btn.active {
+        background: var(--accent-faint);
+        border-color: rgba(0,0,0,0.03);
+      }
+
+      .nav-btn .meta {
+        color: var(--text-soft);
+        font-size: 0.7rem;
+      }
+
+      .nav-btn.active {
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .quick-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        cursor: pointer;
+      }
+
+      .switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        border-radius: 999px;
+        background: rgba(95, 109, 109, 0.2);
+        transition: 0.2s ease;
+      }
+
+      .switch::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: white;
+        top: 3px;
+        left: 3px;
+        transition: 0.2s ease;
+      }
+
+      body[data-theme='dark'] .switch {
+        background: var(--accent);
+      }
+
+      body[data-theme='dark'] .switch::after {
+        left: 23px;
+      }
+
+      .main-panel {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 18px 26px 14px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: color-mix(in srgb, var(--bg) 86%, transparent);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .search-box {
+        flex: 1;
+        max-width: 560px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 10px 14px;
+      }
+
+      .search-box input {
+        background: transparent;
+        border: 0;
+        outline: none;
+        width: 100%;
+        color: var(--text);
+      }
+
+      .search-hint {
+        padding: 6px 8px;
+        border-radius: 8px;
+        background: var(--chip);
+        color: var(--text-soft);
+        font-size: 0.74rem;
+      }
+
+      .topbar-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 0.82rem;
+        color: var(--text);
+      }
+
+      .chip.streak {
+        background: linear-gradient(135deg, rgba(255, 192, 82, 0.12), rgba(230, 128, 61, 0.08));
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .content {
+        padding: 22px 24px 32px;
+      }
+
+      .screen {
+        display: none;
+      }
+
+      .screen.active {
+        display: block;
+      }
+
+      .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      h1, h2, h3, h4, p {
+        margin-top: 0;
+      }
+
+      .page-header h1 {
+        margin: 0;
+        font-size: clamp(1.5rem, 2vw, 2.1rem);
+      }
+
+      .inline-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .btn.primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        border-color: transparent;
+        color: white;
+        box-shadow: 0 12px 24px hsla(var(--accent-h), 55%, 48%, 0.22);
+      }
+
+      .btn.ghost {
+        background: transparent;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .today-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(160px, 1fr));
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .stat-card,
+      .card,
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .stat-card {
+        padding: 16px 18px;
+      }
+
+      .stat-label {
+        color: var(--text-soft);
+        font-size: 0.76rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stat-value {
+        margin-top: 10px;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .stat-value strong {
+        font-size: clamp(1.3rem, 2vw, 2rem);
+      }
+
+      .delta {
+        font-size: 0.82rem;
+        color: var(--success);
+        background: rgba(28, 167, 109, 0.12);
+        padding: 6px 8px;
+        border-radius: 999px;
+      }
+
+      .delta.negative {
+        color: var(--warning);
+        background: rgba(215, 125, 47, 0.12);
+      }
+
+      .today-main,
+      .today-side {
+        display: grid;
+        gap: 18px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 14px;
+      }
+
+      .section-head h3 {
+        margin: 0;
+        font-size: 1.08rem;
+      }
+
+      .course-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0 14px;
+      }
+
+      .mini-chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--chip);
+        font-size: 0.74rem;
+        color: var(--text-soft);
+      }
+
+      .mini-chip.active {
+        background: var(--accent-faint);
+        color: var(--accent-strong);
+        border-color: transparent;
+      }
+
+      .field-label {
+        display: block;
+        color: var(--text-soft);
+        font-size: 0.77rem;
+        margin-bottom: 7px;
+      }
+
+      .input,
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid var(--border);
+        background: var(--panel-strong);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 12px 14px;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 170px;
+        resize: vertical;
+        line-height: 1.6;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0 12px;
+      }
+
+      .toolbar button {
+        border: 1px solid var(--border);
+        background: var(--chip);
+        color: var(--text);
+        border-radius: 10px;
+        min-width: 38px;
+        height: 34px;
+        cursor: pointer;
+      }
+
+      .draft-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 16px;
+        color: var(--text-soft);
+        font-size: 0.76rem;
+      }
+
+      .draft-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .file-dropzone {
+        background: linear-gradient(135deg, var(--accent-faint), transparent 70%);
+        border: 1.5px dashed rgba(128, 139, 135, 0.5);
+        border-radius: var(--radius);
+        padding: 18px;
+        text-align: center;
+        color: var(--text-soft);
+        margin-top: 12px;
+      }
+
+      .file-dropzone strong {
+        color: var(--text);
+      }
+
+      .upload-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .upload-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--panel-strong);
+        gap: 10px;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.72rem;
+        border: 1px solid transparent;
+      }
+
+      .status-badge.ready {
+        background: rgba(28, 167, 109, 0.12);
+        color: var(--success);
+      }
+
+      .status-badge.extracting {
+        background: rgba(50, 115, 217, 0.12);
+        color: var(--info);
+      }
+
+      .status-badge.failed {
+        background: rgba(198, 93, 80, 0.12);
+        color: var(--danger);
+      }
+
+      .status-badge.ocr {
+        background: rgba(215, 125, 47, 0.12);
+        color: var(--warning);
+      }
+
+      .list-card {
+        display: grid;
+        gap: 12px;
+      }
+
+      .note-row {
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--panel-strong);
+        display: grid;
+        gap: 8px;
+      }
+
+      .row-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .course-mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.72rem;
+        color: var(--text-soft);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .note-title {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      .note-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        color: var(--text-soft);
+        font-size: 0.76rem;
+      }
+
+      .snippet {
+        color: var(--text-soft);
+        line-height: 1.5;
+      }
+
+      .language-pill {
+        display: inline-flex;
+        padding: 4px 8px;
+        background: var(--accent-faint);
+        color: var(--accent-strong);
+        border-radius: 999px;
+        font-size: 0.72rem;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .flashcard {
+        background: linear-gradient(160deg, var(--accent-faint), rgba(140, 169, 255, 0.05));
+        border-radius: 18px;
+        padding: 16px;
+        border: 1px solid rgba(0,0,0,0.02);
+      }
+
+      .card-front {
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      .flashcard-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .mini-btn {
+        flex: 1;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 9px 8px;
+        background: var(--panel-strong);
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .tips-list,
+      .topic-list,
+      .distribution-list,
+      .version-list,
+      .qa-list,
+      .doc-list,
+      .tag-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .tip-item,
+      .topic-item,
+      .distribution-item,
+      .version-item,
+      .qa-item,
+      .doc-item,
+      .tag-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+        background: var(--panel-strong);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 9px 10px;
+      }
+
+      .bar {
+        height: 8px;
+        background: rgba(125, 138, 138, 0.18);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .bar > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--accent), rgba(86, 154, 255, 0.8));
+      }
+
+      .timer-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+      }
+
+      .timer-pill {
+        font-size: 1.42rem;
+        font-weight: 800;
+      }
+
+      .library-layout,
+      .detail-layout,
+      .qa-layout,
+      .settings-layout {
+        display: grid;
+        gap: 18px;
+      }
+
+      .library-layout {
+        grid-template-columns: 1.5fr 0.75fr;
+      }
+
+      .library-controls {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .library-controls .input,
+      .library-controls select {
+        max-width: 220px;
+      }
+
+      .cards-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .library-card {
+        display: grid;
+        grid-template-columns: 112px 1fr auto;
+        gap: 14px;
+        padding: 12px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .thumb {
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(30, 144, 90, 0.2), rgba(119, 128, 255, 0.18));
+        min-height: 104px;
+        display: grid;
+        place-items: center;
+        color: var(--text-soft);
+        font-size: 0.8rem;
+      }
+
+      .library-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .tag {
+        font-size: 0.72rem;
+        padding: 5px 8px;
+        border-radius: 999px;
+        background: var(--chip);
+        color: var(--text-soft);
+      }
+
+      .bookmark {
+        width: 36px;
+        height: 36px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text-soft);
+        cursor: pointer;
+      }
+
+      .library-footer {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        color: var(--text-soft);
+        font-size: 0.74rem;
+        margin-top: 12px;
+      }
+
+      .status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--panel-strong);
+      }
+
+      .detail-layout {
+        grid-template-columns: minmax(0, 1.5fr) 340px;
+      }
+
+      .breadcrumbs {
+        color: var(--text-soft);
+        font-size: 0.74rem;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .detail-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .title-block h2 {
+        margin: 0 0 8px;
+      }
+
+      .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        color: var(--text-soft);
+        font-size: 0.77rem;
+      }
+
+      .tab-bar {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 18px 0 12px;
+      }
+
+      .tab-btn {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text-soft);
+        padding: 10px 14px;
+        border-radius: 12px;
+        cursor: pointer;
+      }
+
+      .tab-btn.active {
+        background: var(--accent-faint);
+        color: var(--accent-strong);
+        border-color: transparent;
+      }
+
+      .content-block {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .observe-box {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+
+      .observe-box .box {
+        background: var(--accent-faint);
+        padding: 10px 12px;
+        border-radius: 12px;
+        min-width: 120px;
+      }
+
+      pre.code-block {
+        margin: 0;
+        background: #10151b;
+        color: #cfe7ff;
+        border-radius: 14px;
+        padding: 14px;
+        overflow: auto;
+      }
+
+      .copy-btn {
+        margin-top: 10px;
+      }
+
+      .audit-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .audit-list li {
+        padding: 12px 14px;
+        background: rgba(215, 125, 47, 0.08);
+        border-radius: 12px;
+      }
+
+      .qa-layout {
+        grid-template-columns: minmax(0, 1.35fr) 320px;
+      }
+
+      .session-header,
+      .scope-row,
+      .input-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .scope-row {
+        margin: 14px 0;
+      }
+
+      .scope-pills {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .scope-pills .mini-chip {
+        cursor: pointer;
+      }
+
+      .empty-state {
+        padding: 18px;
+        border: 1px dashed var(--border);
+        border-radius: 20px;
+        background: var(--panel);
+      }
+
+      .question-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+      }
+
+      .question-pills button {
+        background: var(--panel-strong);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 12px;
+        cursor: pointer;
+      }
+
+      .chat-box {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 18px;
+        min-height: 170px;
+        margin-top: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .chat-bubble {
+        max-width: 80%;
+        background: var(--panel-strong);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 12px 14px;
+      }
+
+      .chat-bubble.ai {
+        background: var(--accent-faint);
+        border-color: transparent;
+        margin-left: auto;
+      }
+
+      .composer {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .input-row {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 12px 14px;
+      }
+
+      .input-row textarea {
+        min-height: 72px;
+        border: 0;
+        background: transparent;
+        resize: vertical;
+      }
+
+      .composer-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .composer-actions .left,
+      .composer-actions .right {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .settings-layout {
+        grid-template-columns: minmax(0, 1.5fr) 360px;
+      }
+
+      .setting-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .setting-card {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .setting-card h3 {
+        margin: 0 0 14px;
+      }
+
+      .profile-form {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(170px, 1fr));
+        gap: 12px;
+      }
+
+      .accent-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .accent-swatch {
+        width: 28px;
+        height: 28px;
+        border-radius: 12px;
+        border: 2px solid rgba(255,255,255,0.2);
+        cursor: pointer;
+      }
+
+      .accent-swatch.active {
+        outline: 2px solid var(--text);
+        outline-offset: 2px;
+      }
+
+      .course-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--panel-strong);
+      }
+
+      .course-info {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .range-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .range-row button {
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--border);
+        background: var(--panel-strong);
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .danger-zone {
+        border-color: rgba(198, 93, 80, 0.4);
+        background: rgba(198, 93, 80, 0.06);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .search-overlay {
+        position: fixed;
+        inset: 0;
+        background: var(--overlay);
+        display: none;
+        place-items: center;
+        z-index: 30;
+      }
+
+      .search-overlay.active {
+        display: grid;
+      }
+
+      .search-dialog {
+        width: min(660px, calc(100vw - 32px));
+        background: var(--panel-strong);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+      }
+
+      .search-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .search-dialog input {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        outline: none;
+      }
+
+      .search-results {
+        display: grid;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .search-result {
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--panel);
+      }
+
+      @media (max-width: 1100px) {
+        .app-shell {
+          display: block;
+        }
+
+        .sidebar {
+          display: none;
+        }
+
+        .content {
+          padding-bottom: 90px;
+        }
+
+        .today-grid,
+        .library-layout,
+        .detail-layout,
+        .qa-layout,
+        .settings-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .topbar {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+
+        .topbar-meta {
+          gap: 8px;
+        }
+
+        .chip:not(.streak) {
+          display: none;
+        }
+
+        .search-box {
+          max-width: 100%;
+        }
+
+        .content {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        .stats-row {
+          grid-template-columns: repeat(2, minmax(140px, 1fr));
+        }
+
+        .library-card {
+          grid-template-columns: 1fr;
+        }
+
+        .profile-form {
+          grid-template-columns: 1fr;
+        }
+
+        .bottom-nav {
+          position: fixed;
+          left: 12px;
+          right: 12px;
+          bottom: 12px;
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 8px;
+          padding: 8px 10px;
+          background: rgba(26, 35, 41, 0.92);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 18px;
+          backdrop-filter: blur(14px);
+          z-index: 20;
+        }
+
+        .bottom-nav .nav-btn {
+          background: transparent;
+          color: white;
+          padding: 9px 8px;
+          justify-content: center;
+          text-align: center;
+          font-size: 0.72rem;
+        }
+
+        .bottom-nav .nav-btn.active {
+          background: rgba(255,255,255,0.08);
+        }
+      }
+
+      @media (min-width: 721px) {
+        .bottom-nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body data-theme="light" data-font-size="standard">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">✦</div>
+          <span>Catatan Belajar Progresif</span>
+        </div>
+
+        <div class="student-card">
+          <div class="avatar" id="sidebarAvatar">MB</div>
+          <div>
+            <strong id="sidebarName">Mahasiswa Baru</strong>
+            <div class="muted" id="sidebarProgram">Teknik Informatika</div>
+            <div class="muted" id="sidebarSemester">Semester 1</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Navigasi utama">
+          <button class="nav-btn active" data-screen="today">
+            <span>Hari Ini</span>
+            <span class="meta">01</span>
+          </button>
+          <button class="nav-btn" data-screen="library">
+            <span>Perpustakaan</span>
+            <span class="meta">02</span>
+          </button>
+          <button class="nav-btn" data-screen="detail">
+            <span>Detail Catatan</span>
+            <span class="meta">03</span>
+          </button>
+          <button class="nav-btn" data-screen="qa">
+            <span>Tanya Jawab</span>
+            <span class="meta">04</span>
+          </button>
+          <button class="nav-btn" data-screen="settings">
+            <span>Pengaturan</span>
+            <span class="meta">05</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="quick-toggle" id="quickThemeToggle">
+            <span>Tampilan</span>
+            <span class="switch" aria-hidden="true"></span>
+          </div>
+          <div class="quick-toggle">
+            <span>Fokus</span>
+            <span class="muted">Mode tenang</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="search-box" id="globalSearchBox" tabindex="0" aria-label="Pencarian global">
+            <span>⌕</span>
+            <input id="globalSearchInput" type="text" placeholder="Cari catatan, topik, mata kuliah..." />
+            <span class="search-hint">Ctrl/K</span>
+          </div>
+
+          <div class="topbar-meta">
+            <span class="chip" id="semesterChip">Semester 1</span>
+            <span class="chip streak" id="streakChip">🔥 0 hari</span>
+            <button class="icon-btn" aria-label="Notifikasi">🔔</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <section class="screen active" id="screen-today" data-screen="today">
+            <div class="page-header">
+              <h1 id="greetingHeading">Selamat datang</h1>
+              <div class="inline-actions">
+                <button class="btn ghost">Hari ini</button>
+                <button class="btn primary">Mulai sesi</button>
+              </div>
+            </div>
+
+            <div class="stats-row" id="statsRow"></div>
+
+            <div class="today-grid">
+              <div class="today-main">
+                <div class="card">
+                  <div class="section-head">
+                    <h3>Tulis Catatan Cepat</h3>
+                    <button class="btn ghost small" id="newQuickNoteBtn">Baru</button>
+                  </div>
+
+                  <div class="course-chips" id="courseChips"></div>
+
+                  <label class="field-label" for="quickNoteTitle">Judul catatan</label>
+                  <input id="quickNoteTitle" class="input" type="text" placeholder="Mis. Analisis flowchart sistem ..." />
+
+                  <div class="toolbar" aria-label="Toolbar format">
+                    <button type="button" title="Tebal">B</button>
+                    <button type="button" title="Miring"><em>I</em></button>
+                    <button type="button" title="Kode">&lt;/&gt;</button>
+                    <button type="button" title="Daftar">• List</button>
+                    <button type="button" title="Rumus">Σ</button>
+                    <button type="button" title="Pseudocode">{} </button>
+                  </div>
+
+                  <textarea id="quickNoteEditor" placeholder="# Tulis ringkasan...\n\n- poin utama\n- pemahaman\n- pertanyaan"></textarea>
+
+                  <div class="draft-meta">
+                    <span id="wordCount">0 kata</span>
+                    <span id="draftSaved">disimpan 2 menit lalu</span>
+                  </div>
+
+                  <div class="draft-actions">
+                    <button class="btn ghost" id="saveDraftBtn">Simpan Draf</button>
+                    <button class="btn primary" id="saveEnhanceBtn">Simpan &amp; Sempurnakan</button>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="section-head">
+                    <h3>Unggah Slide &amp; Analisis OCR</h3>
+                    <button class="btn ghost">Pratinjau</button>
+                  </div>
+
+                  <div class="file-dropzone" id="dropzone">
+                    <strong>Tarik file ke sini</strong>
+                    <p>PDF, DOCX, PNG, JPG, TXT/MD · maksimal 25 MB</p>
+                  </div>
+
+                  <input id="fileInput" type="file" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt,.md" multiple class="sr-only" />
+                  <div class="upload-list" id="uploadList"></div>
+                </div>
+
+                <div class="card">
+                  <div class="section-head">
+                    <h3>Catatan Dipelajari Hari Ini</h3>
+                    <button class="btn ghost">Lihat semua</button>
+                  </div>
+                  <div class="list-card" id="todaysNotesList"></div>
+                </div>
+              </div>
+
+              <div class="today-side">
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Flashcard Kilat</h3>
+                    <button id="flashcardResetBtn" class="btn ghost" type="button">Reset</button>
+                  </div>
+                  <div class="flashcard">
+                    <div id="flashcardQuestion" class="card-front">Apa yang membedakan pendekatan solusi top-down dan bottom-up dalam desain sistem?</div>
+                    <div id="flashcardMeta" class="muted">Kartu balik • Ulasan berikutnya: 14.30</div>
+                    <div class="flashcard-actions">
+                      <button class="mini-btn" type="button" data-flashcard-action="lupa">Lupa</button>
+                      <button class="mini-btn" type="button" data-flashcard-action="ragu">Ragu</button>
+                      <button class="mini-btn" type="button" data-flashcard-action="hafal">Hafal</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Tips Sintesis AI</h3>
+                    <button class="btn ghost">Refresh</button>
+                  </div>
+                  <div class="tips-list" id="tipsList"></div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Distribusi Belajar</h3>
+                    <button class="btn ghost">Mingguan</button>
+                  </div>
+                  <div class="distribution-list" id="distributionList"></div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Timer Sesi</h3>
+                    <button id="timerResetBtn" class="btn ghost" type="button">Sesi baru</button>
+                  </div>
+                  <div class="timer-row">
+                    <span id="timerValue" class="timer-pill">01:24:12</span>
+                    <button id="timerStartBtn" class="btn primary" type="button">Mulai</button>
+                  </div>
+                  <div class="draft-actions">
+                    <button id="timerPauseBtn" class="btn ghost" type="button">Jeda</button>
+                    <button id="timerFocusBtn" class="btn ghost" type="button">Mode Fokus</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="screen" id="screen-library" data-screen="library">
+            <div class="page-header">
+              <h1>Perpustakaan</h1>
+              <div class="inline-actions">
+                <button class="btn ghost">Filter</button>
+                <button class="btn primary">Tambah catatan</button>
+              </div>
+            </div>
+
+            <div class="library-layout">
+              <div>
+                <div class="library-controls">
+                  <input class="input" id="librarySearch" type="text" placeholder="Cari isi catatan, topik, atau kata kunci" />
+                  <select id="sortSelect">
+                    <option>Terbaru</option>
+                    <option>Terlama</option>
+                    <option>Frekuensi ulasan</option>
+                  </select>
+                  <select id="courseFilter">
+                    <option value="all">Semua mata kuliah</option>
+                  </select>
+                  <select id="statusFilter">
+                    <option>Semua</option>
+                    <option>Sudah Disempurnakan</option>
+                    <option>Catatan Asli</option>
+                  </select>
+                </div>
+
+                <div class="cards-grid" id="libraryCards"></div>
+              </div>
+
+              <aside class="sidebar-stack" style="display:grid; gap:18px;">
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Fokus Minggu Ini</h3>
+                    <span class="muted">7/10</span>
+                  </div>
+                  <div class="note-row">
+                    <div class="note-title">Mata Kuliah: Algoritma</div>
+                    <div class="snippet">3 modul selanjutnya • 4 catatan butuh review</div>
+                    <div class="bar"><span style="width:72%"></span></div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Rekap AI</h3>
+                    <span class="muted">74%</span>
+                  </div>
+                  <div class="bar"><span style="width:74%"></span></div>
+                  <p class="muted" style="margin-top:12px;">Progres penyempurnaan meningkat 12% dibanding minggu lalu.</p>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Penyimpanan</h3>
+                    <span class="status-badge ready">Tersimpan online</span>
+                  </div>
+                  <div class="muted">1.8 GB dari 4.0 GB · terakhir sinkron 08:41</div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="screen" id="screen-detail" data-screen="detail">
+            <div class="breadcrumbs">
+              <span>Perpustakaan</span>
+              <span>›</span>
+              <span>Algoritma</span>
+              <span>›</span>
+              <span>Optimasi Tabel Hash</span>
+            </div>
+
+            <div class="detail-layout">
+              <div>
+                <div class="detail-title-row">
+                  <div class="title-block">
+                    <h2 id="detailTitle">Optimasi Tabel Hash</h2>
+                    <div class="meta-row" id="detailMeta">
+                      <span class="tag">Algoritma</span>
+                      <span>Dipelajari 23 Sep 2026</span>
+                      <span>3 menit dibaca</span>
+                      <span>6 lampiran</span>
+                    </div>
+                  </div>
+                  <div class="inline-actions">
+                    <button id="detailAddRelatedBtn" class="btn ghost" type="button">Tambah Catatan Terkait</button>
+                    <button id="detailEditBtn" class="btn ghost" type="button">Edit</button>
+                    <button id="detailDeleteBtn" class="btn ghost" type="button" style="color: var(--danger);">Hapus</button>
+                  </div>
+                </div>
+
+                <div class="tab-bar">
+                  <button class="tab-btn active">Catatan Asli</button>
+                  <button class="tab-btn">Versi Sempurna</button>
+                  <button class="tab-btn">File Terlampir</button>
+                  <button class="tab-btn">Tanya Jawab Terkait</button>
+                </div>
+
+                <div class="content-block" id="detailContent">
+                  <div class="observe-box">
+                    <div class="box">
+                      <strong>TL;DR</strong>
+                      <div class="muted">Tabel hash yang ideal memiliki rasio load factor 0.6–0.75 dan memilih fungsi hash yang merata.</div>
+                    </div>
+                    <div class="box">
+                      <strong>Mode</strong>
+                      <div class="muted">Perlu ulasan AI</div>
+                    </div>
+                  </div>
+
+                  <h4>Catatan asli</h4>
+                  <p>Hash table digunakan untuk lookup cepat. Masalah utama adalah collision. Kita bisa menggunakan chaining atau open addressing. Jika banyak data, fungsi hash epoch semakin penting. Namun, ketika load factor tinggi, performa turun drastis.</p>
+                  <p>Untuk data yang sering dibaca, use separate chaining untuk lebih sederhana. Pada kasus nilai yang sering muncul, gunakan fungsi hash dengan modifikasi pola. Catatan terkait: implementasi di buku “Algoritma dan Struktur Data”.</p>
+
+                  <h4>Versi Sempurna</h4>
+                  <div class="content-block" style="margin-top:14px; background: var(--panel-strong);">
+                    <h5>Ringkasan Eksekutif</h5>
+                    <p>Untuk menjaga performa tabel hash, kontrol load factor di sekitar 0.6–0.75, hindari fungsi hash yang terlalu sederhana, dan pilih teknik collision handling yang sesuai dengan pola akses data.</p>
+
+                    <h5>Penjelasan Lengkap</h5>
+                    <p>Jika ukuran array tetap dan load factor meningkat, probability collision akan naik secara eksponensial. Dalam praktiknya, array yang terlalu penuh akan membuat time complexity menjadi O(n) di beberapa operasi.</p>
+
+                    <h5>Istilah Penting</h5>
+                    <div class="tag-row" id="detailTagList">
+                      <span class="tag">Load Factor</span>
+                      <span class="tag">Collision</span>
+                      <span class="tag">Open Addressing</span>
+                    </div>
+
+                    <h5>Implementasi Kode</h5>
+                    <pre class="code-block">def hitung_hash(kunci, size):
+    return kunci % size
+
+class TabelHash:
+    def __init__(self, size):
+        self.size = size
+        self.data = [[] for _ in range(size)]
+
+    def tambah(self, kunci, nilai):
+        indeks = hitung_hash(kunci, self.size)
+        self.data[indeks].append((kunci, nilai))</pre>
+                    <button class="btn ghost copy-btn">Salin kode</button>
+
+                    <h5>Koreksi &amp; Catatan Audit AI</h5>
+                    <ul class="audit-list">
+                      <li>Catatan asli menyebut “epoch hash” yang tidak relevan; versi yang benar berfokus pada fungsi hash dan load factor.</li>
+                      <li>Analogi open addressing cocok untuk nilai akses acak, bukan untuk dataset yang sangat padat.</li>
+                    </ul>
+
+                    <h5>Pertanyaan Latihan</h5>
+                    <ul class="audit-list">
+                      <li>Bagaimana perubahan load factor memengaruhi performa lookup dengan collision handling chain? <button class="btn ghost">Lihat Kunci</button></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <aside class="sidebar-stack" style="display:grid; gap:18px;">
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Tingkat Penguasaan</h3>
+                    <strong>82%</strong>
+                  </div>
+                  <div class="bar"><span style="width:82%"></span></div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Ulasan Berikutnya</h3>
+                  </div>
+                  <div class="muted">Hari ini • 16.00</div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Topik Terkait</h3>
+                  </div>
+                  <div class="topic-list">
+                    <div class="topic-item"><span>Hashing</span><span class="muted">6x</span></div>
+                    <div class="topic-item"><span>Collision</span><span class="muted">5x</span></div>
+                    <div class="topic-item"><span>Big O</span><span class="muted">3x</span></div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Flashcard Kilat</h3>
+                  </div>
+                  <div class="flashcard">
+                    <div class="card-front">Apa fungsi load factor dalam hash table?</div>
+                    <div class="muted">Menilai apakah table perlu resize</div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+
+            <div class="content-block" style="margin-top:18px;">
+              <h3>Arah Tambahan untuk AI</h3>
+              <textarea rows="3" placeholder="Berikan arahan tambahan agar AI memperdalam versi catatan..."></textarea>
+              <div class="tag-row" style="margin-top:12px;">
+                <button class="mini-chip active">Analogi Kasir</button>
+                <button class="mini-chip">Contoh Coding</button>
+                <button class="mini-chip">Buat diagram</button>
+              </div>
+              <div class="draft-actions">
+                <button class="btn primary">Tambah Detail Lagi</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="screen" id="screen-qa" data-screen="qa">
+            <div class="page-header">
+              <h1>Tanya Jawab</h1>
+              <div class="inline-actions">
+                <button class="btn ghost">Pilih sesi lama</button>
+                <button class="btn primary">Sesi Baru</button>
+              </div>
+            </div>
+
+            <div class="qa-layout">
+              <div>
+                <div class="panel">
+                  <div class="session-header">
+                    <strong>Sesi belajar aktif</strong>
+                    <span class="muted">Minggu 2 • 09.30</span>
+                  </div>
+
+                  <div class="scope-row">
+                    <div class="scope-pills">
+                      <button class="mini-chip active">Catatan ini</button>
+                      <button class="mini-chip">Satu mata kuliah</button>
+                      <button class="mini-chip">Semua catatan</button>
+                    </div>
+                  </div>
+
+                  <div class="empty-state">
+                    <h3>Belum ada pertanyaan</h3>
+                    <p class="muted">Contoh pertanyaan dibuat dari catatan yang kamu simpan:</p>
+                    <div class="question-pills">
+                      <button>Buatkan kuis latihan</button>
+                      <button>Jelaskan lebih sederhana</button>
+                      <button>Ringkas 5 poin</button>
+                    </div>
+                  </div>
+
+                  <div class="chat-box" id="chatBox">
+                    <div class="chat-bubble">Saya ingin melihat pola collision yang paling sering muncul pada tabel hash dengan load factor > 0.75.</div>
+                    <div class="chat-bubble ai">Berdasarkan catatan “Optimasi Tabel Hash”, collision biasanya meningkat ketika load factor melewati 0.75. Dalam praktikum, pendekatan chaining tetap lebih stabil untuk data acak; open addressing lebih efisien bila ukuran array dapat di-resize.</div>
+                  </div>
+
+                  <div class="composer">
+                    <div class="input-row">
+                      <textarea id="qaInput" placeholder="Tanya apa pun tentang catatanmu..."></textarea>
+                    </div>
+
+                    <div class="composer-actions">
+                      <div class="left">
+                        <button class="btn ghost">📎 Lampir file</button>
+                        <button class="btn ghost">🖼️ Gambar</button>
+                        <button class="btn ghost">🎙️ Mic</button>
+                      </div>
+                      <div class="right">
+                        <button class="btn ghost">Bersihkan</button>
+                        <button class="btn primary">Kirim</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p class="muted" style="margin-top:12px;">AI menjawab berdasarkan catatan yang kamu simpan; periksa kembali hal penting.</p>
+                </div>
+              </div>
+
+              <aside class="sidebar-stack" style="display:grid; gap:18px;">
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Konteks Bahan Kajian</h3>
+                  </div>
+                  <div class="doc-list">
+                    <div class="doc-item"><span>Mata Kuliah</span><strong>Algoritma</strong></div>
+                    <div class="doc-item"><span>Jumlah modul</span><strong>12</strong></div>
+                    <div class="doc-item"><span>Dokumen terbuka</span><strong>3</strong></div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Fokus Pekan Ini</h3>
+                  </div>
+                  <div class="topic-list">
+                    <div class="topic-item"><span>Hashing</span><span class="muted">Rendah</span></div>
+                    <div class="topic-item"><span>Tree Traversal</span><span class="muted">Sedang</span></div>
+                    <div class="topic-item"><span>Graph Search</span><span class="muted">Tinggi</span></div>
+                  </div>
+                </div>
+
+                <div class="panel">
+                  <div class="section-head">
+                    <h3>Tips Belajar</h3>
+                  </div>
+                  <ul class="audit-list">
+                    <li>Ulang konsep hashing dengan contoh data 10.000 record.</li>
+                    <li>Bandingkan collision handling chain dan probing.</li>
+                  </ul>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="screen" id="screen-settings" data-screen="settings">
+            <div class="page-header">
+              <h1>Pengaturan</h1>
+              <div class="inline-actions">
+                <button id="resetDefaultSettingsBtn" class="btn ghost" type="button">Reset Default</button>
+                <button id="saveSettingsBtn" class="btn primary" type="button">Simpan Perubahan</button>
+              </div>
+            </div>
+
+            <div class="settings-layout">
+              <div class="setting-grid">
+                <div class="setting-card">
+                  <h3>Profil mahasiswa</h3>
+                  <div class="profile-form">
+                    <label>
+                      <span class="field-label">Nama lengkap</span>
+                      <input class="input" id="settingsName" value="Nabila Rahman" />
+                    </label>
+                    <label>
+                      <span class="field-label">Program studi</span>
+                      <input class="input" id="settingsProgram" value="Teknik Informatika" />
+                    </label>
+                    <label>
+                      <span class="field-label">Semester</span>
+                      <input class="input" type="number" id="settingsSemester" value="1" />
+                    </label>
+                    <label>
+                      <span class="field-label">Total SKS</span>
+                      <input class="input" type="number" id="settingsTotalSks" value="0" />
+                    </label>
+                    <label>
+                      <span class="field-label">Target SKS</span>
+                      <input class="input" type="number" id="settingsTargetSks" value="0" />
+                    </label>
+                    <label>
+                      <span class="field-label">Target streak</span>
+                      <input class="input" type="number" id="settingsStreakTarget" value="0" />
+                    </label>
+                  </div>
+                </div>
+
+                <div class="setting-card">
+                  <h3>Target &amp; Disiplin</h3>
+                  <div class="range-row" style="margin-bottom:14px;">
+                    <span>Jam belajar per hari</span>
+                    <button id="dailyHoursMinus" type="button" aria-label="Kurangi">−</button>
+                    <strong id="dailyHoursValue">2 jam</strong>
+                    <button id="dailyHoursPlus" type="button" aria-label="Tambah">+</button>
+                  </div>
+                  <label class="field-label" for="browserNotif">Notifikasi browser</label>
+                  <input id="browserNotif" type="checkbox" checked />
+                </div>
+
+                <div class="setting-card">
+                  <h3>Cadangan &amp; Sinkronisasi</h3>
+                  <div class="status-row">
+                    <span>Ukuran data tersimpan</span>
+                    <strong>1.8 GB</strong>
+                  </div>
+                  <div class="draft-actions" style="justify-content:flex-start; margin-top:12px;">
+                    <button id="exportJsonBtn" class="btn ghost" type="button">Ekspor JSON</button>
+                    <button id="importJsonBtn" class="btn ghost" type="button">Impor</button>
+                  </div>
+                </div>
+
+                <div class="setting-card">
+                  <h3>Tampilan &amp; Tipografi</h3>
+                  <div class="field-label">Skema</div>
+                  <div class="scope-pills">
+                    <button class="mini-chip active" data-theme-option="light">Terang</button>
+                    <button class="mini-chip" data-theme-option="dark">Gelap</button>
+                    <button class="mini-chip" data-theme-option="system">Ikuti sistem</button>
+                  </div>
+                  <div class="field-label" style="margin-top:18px;">Aksen</div>
+                  <div class="accent-grid" id="accentGrid"></div>
+                  <div class="field-label" style="margin-top:18px;">Ukuran pembaca</div>
+                  <div class="scope-pills">
+                    <button class="mini-chip" data-font-size="small">Kecil</button>
+                    <button class="mini-chip active" data-font-size="standard">Standar</button>
+                    <button class="mini-chip" data-font-size="large">Besar</button>
+                  </div>
+                </div>
+
+                <div class="setting-card">
+                  <h3>Manajemen Mata Kuliah</h3>
+                  <div class="course-items" id="settingsCourseList"></div>
+                </div>
+              </div>
+
+              <aside class="sidebar-stack" style="display:grid; gap:18px;">
+                <div class="setting-card danger-zone">
+                  <h3>Zona Bahaya</h3>
+                  <p class="muted">Hapus semua data, catatan, dan unggahan secara permanen.</p>
+                  <button id="deleteAllDataBtn" class="btn" type="button" style="border-color: rgba(198,93,80,0.4); color: var(--danger);">Hapus semua data</button>
+                </div>
+              </aside>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <nav class="bottom-nav" aria-label="Navigasi mobile">
+      <button class="nav-btn active" data-screen="today">Hari Ini</button>
+      <button class="nav-btn" data-screen="library">Perpus</button>
+      <button class="nav-btn" data-screen="detail">Detail</button>
+      <button class="nav-btn" data-screen="qa">Tanya</button>
+      <button class="nav-btn" data-screen="settings">Pengaturan</button>
+    </nav>
+
+    <div class="search-overlay" id="searchOverlay" aria-hidden="true">
+      <div class="search-dialog" role="dialog" aria-modal="true">
+        <div class="search-header">
+          <span>⌕</span>
+          <input id="searchOverlayInput" type="text" placeholder="Cari catatan, topik, atau file sensitif..." />
+          <button class="btn ghost">Esc</button>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>
