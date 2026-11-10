@@ -1,0 +1,7 @@
+# Local backup archives
+backup-step1/
+*.zip
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
